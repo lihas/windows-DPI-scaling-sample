@@ -4,7 +4,7 @@ The visual studio solution constans 2 projects
 This is the helper library which contains class DpiHelper. This has functions for setting and getting DPI.
 1. DPIScalingMFCApp
 Here is how the app looks
-![DPI scaling MFC app](DPIScalingMFCAppScreenshot.JPG)
+![DPI scaling MFC app](DPIScalingMFCAppScreenHelp.png)
 
 The repo is based on the study I did by reverse engineering system settings app (immersive control panel), user32.dll (which contains the API used for DPI scaling).
 For getting, and setting DPI scaling of a monitor DisplayConfigGetDeviceInfo(), and DisplayConfigSetDeviceInfo() functions are used.
