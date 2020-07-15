@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DPIScalingMFCApp", "DPIScalingMFCApp\DPIScalingMFCApp.vcxproj", "{428A9DE4-00B4-4C4A-87B6-24C534BBAEE2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "1_DPIScalingMFCApp", "DPIScalingMFCApp\DPIScalingMFCApp.vcxproj", "{428A9DE4-00B4-4C4A-87B6-24C534BBAEE2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DPIHelper", "DPIHelper\DPIHelper.vcxproj", "{4D02B80A-9A6B-4E8C-B13B-A7223AD0BE82}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "0_DPIHelper", "DPIHelper\DPIHelper.vcxproj", "{4D02B80A-9A6B-4E8C-B13B-A7223AD0BE82}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2_Console_Using_SystemParametersInfo_Api", "Console_Using_SystemParametersInfo_Api\Console_Using_SystemParametersInfo_Api.vcxproj", "{A3E2E66B-FF58-4AE2-ADB8-2BB1170047F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,8 +33,19 @@ Global
 		{4D02B80A-9A6B-4E8C-B13B-A7223AD0BE82}.Release|x64.Build.0 = Release|x64
 		{4D02B80A-9A6B-4E8C-B13B-A7223AD0BE82}.Release|x86.ActiveCfg = Release|Win32
 		{4D02B80A-9A6B-4E8C-B13B-A7223AD0BE82}.Release|x86.Build.0 = Release|Win32
+		{A3E2E66B-FF58-4AE2-ADB8-2BB1170047F9}.Debug|x64.ActiveCfg = Debug|x64
+		{A3E2E66B-FF58-4AE2-ADB8-2BB1170047F9}.Debug|x64.Build.0 = Debug|x64
+		{A3E2E66B-FF58-4AE2-ADB8-2BB1170047F9}.Debug|x86.ActiveCfg = Debug|Win32
+		{A3E2E66B-FF58-4AE2-ADB8-2BB1170047F9}.Debug|x86.Build.0 = Debug|Win32
+		{A3E2E66B-FF58-4AE2-ADB8-2BB1170047F9}.Release|x64.ActiveCfg = Release|x64
+		{A3E2E66B-FF58-4AE2-ADB8-2BB1170047F9}.Release|x64.Build.0 = Release|x64
+		{A3E2E66B-FF58-4AE2-ADB8-2BB1170047F9}.Release|x86.ActiveCfg = Release|Win32
+		{A3E2E66B-FF58-4AE2-ADB8-2BB1170047F9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A226F7F4-3605-42DA-AC06-BB4C955B7844}
 	EndGlobalSection
 EndGlobal
