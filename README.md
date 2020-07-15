@@ -21,3 +21,18 @@ I used WinDbg, and ghidra (https://ghidra-sre.org/) in the reverse engineering e
 If you want to set\get DPI scaling from your code, just use the DpiHelper class. The main methods i the class are
 1. GetDPIScalingInfo(), and
 1. SetDPIScaling()
+
+## UPDATE 1 : 15 July 2020
+Added a new project which uses OS API SystemParametersInfo() to set DPI.
+This method is useful when trying to set DPI scaling for primary monitor 
+in a multi monitor setup, or there is only a single display, as API is much simpler.
+Compared to my earlier approach this suffers from some drawbacks though.
+
+![DPI scaling using SystemParametersInfo console App](Console_Using_SystemParametersInfo_Api.PNG)
+
+Pros wrt prev approach.
+1. Very simple, thus when we are interested in setting DPI scaling for primary monitor only, or there is only a single monitor, this is quite favorable.
+Cons wrt prev approach.
+1. Cannot be used for setting per monitor DPI scaling in multi monitor setup
+1. Does not give you currently applied DPI scaling
+1. Does not tell max/min values of DPI scaling allowed for a monitor. However if you try to set beyond max, it will use max value.
