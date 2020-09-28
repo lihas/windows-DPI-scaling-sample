@@ -22,6 +22,12 @@ If you want to set\get DPI scaling from your code, just use the DpiHelper class.
 1. GetDPIScalingInfo(), and
 1. SetDPIScaling()
 
+## Update 2 : 28 Sep 2020
+Command line version - https://github.com/imniko/SetDPI
+
+A user created a command line version. I have not tested it but from the description given on the repo it seems great.
+Do check it out.
+
 ## UPDATE 1 : 15 July 2020
 Added a new project which uses OS API SystemParametersInfo() to set DPI.
 This method is useful when trying to set DPI scaling for primary monitor 
