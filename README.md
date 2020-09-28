@@ -1,4 +1,4 @@
-The visual studio solution constans 2 projects (3 projects now. see update 1)
+The visual studio solution constans 2 projects (3 projects now. see update 1. for command line version see update 2)
 
 1. DPIHelper (static lib)
 This is the helper library which contains class DpiHelper. This has functions for setting and getting DPI.
