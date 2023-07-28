@@ -4,7 +4,7 @@
 
 #pragma once
 #include "afxwin.h"
-#include <map>;
+#include <map>
 
 
 // CDPIScalingMFCAppDlg dialog
@@ -45,7 +45,7 @@ protected:
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
-    bool FillDisplayInfo(LUID adapterID, int sourceID);
+    bool FillDisplayInfo(LUID adapterID, int sourceID, int targetID);
     bool Refresh();
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
@@ -58,5 +58,6 @@ public:
     CEdit m_recommendedDPI;
     CListBox m_dpiList;
     afx_msg void OnBnClickedButton2();
-    afx_msg void OnBnClickedButton1();
+    afx_msg void OnBnClickedApply();
+    CEdit m_displayUniqueName;
 };

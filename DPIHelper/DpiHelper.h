@@ -36,6 +36,9 @@ public:
     {
         DISPLAYCONFIG_DEVICE_INFO_GET_DPI_SCALE = -3, //returns min, max, suggested, and currently applied DPI scaling values.
         DISPLAYCONFIG_DEVICE_INFO_SET_DPI_SCALE = -4, //set current dpi scaling value for a display
+        DISPLAYCONFIG_DEVICE_INFO_GET_MONITOR_BRIGHTNESS_INFO = -7, //Get monitor brightness info
+        DISPLAYCONFIG_DEVICE_INFO_GET_MONITOR_INTERNAL_INFO = DISPLAYCONFIG_DEVICE_INFO_GET_MONITOR_BRIGHTNESS_INFO, //alias for DISPLAYCONFIG_DEVICE_INFO_GET_MONITOR_BRIGHTNESS_INFO since it returns values other than brightness
+        DISPLAYCONFIG_DEVICE_INFO_GET_MONITOR_UNIQUE_NAME = DISPLAYCONFIG_DEVICE_INFO_GET_MONITOR_BRIGHTNESS_INFO, //Another Alias since we are using the parameter mainly for getting the display unique name
     };
 
     /*
@@ -103,7 +106,112 @@ public:
 
     DpiHelper();
     ~DpiHelper();
+
+    /*
+    * When DPI scaling value is stored by OS in registry location Computer\HKEY_CURRENT_USER\Control Panel\Desktop\PerMonitorSettings
+    * a unique string is generated for displays.
+    * eg. Computer\HKEY_CURRENT_USER\Control Panel\Desktop\PerMonitorSettings\LEN41410_00_07E3_24^A8DD7E34BCF1555F032E26E990ABC597
+    * For every display which has its DPI scaling value set to a non custom value an entry like this would be there.
+    * If we want to set the registry value for a display manually when no such registry entry exists for it, then getting the unique
+    * string isn't a straighforward process. The algorithm is analyzed partially here - https://stackoverflow.com/a/57397039/981766
+    * but it doesn't cover all scenarios.
+    * I recently stumbled across another undocumented Windows API which seems to give us this string for a display - DisplayConfigGetDeviceInfo(-7 or 0xfffffff9),
+    * ie. type parameter set to -7.
+    */
+    static std::wstring GetDisplayUniqueName(LUID adapterID, UINT32 sourceID);
     static DpiHelper::DPIScalingInfo GetDPIScalingInfo(LUID adapterID, UINT32 sourceID);
     static bool SetDPIScaling(LUID adapterID, UINT32 sourceID, UINT32 dpiPercentToSet);
+
+    /*Data structures for DisplayConfigGetDeviceInfo(-7)*/
+
+    struct _DISPLAYCONFIG_BRIGHTNESS_CAPS_u_312_s_0 {
+        unsigned int bLegacySupported : 1;
+        unsigned int bNitsSupported : 1;
+        unsigned int bCalibrated : 1;
+        unsigned int bSmoothBrightnessSupported : 1;
+        unsigned int bAdaptiveBrightnessSupported : 1;
+
+    };
+
+    struct _DISPLAYCONFIG_BRIGHTNESS_NIT_RANGE {
+        unsigned int MinMillinits;
+        unsigned int MaxMillinits;
+        unsigned int StepSizeMillinits;
+    };
+
+    union _DISPLAYCONFIG_BRIGHTNESS_CAPS_u_312 {
+        struct _DISPLAYCONFIG_BRIGHTNESS_CAPS_u_312_s_0 _s_0;
+        unsigned int value;
+    };
+
+    struct _DISPLAYCONFIG_BRIGHTNESS_CAPS {
+        unsigned char LegacyLevels[101];
+        unsigned int LegacyLevelCount;
+        struct _DISPLAYCONFIG_BRIGHTNESS_NIT_RANGE NitRanges[16];
+        unsigned int NormalRangeCount;
+        unsigned int TotalRangeCount;
+        unsigned int PreferredMaximumBrightness;
+        union _DISPLAYCONFIG_BRIGHTNESS_CAPS_u_312 field6_0x138;
+    };
+
+    /*From windows.graphics.dll*/
+    typedef enum _DISPLAYCONFIG_HDR_CERTIFICATIONS {
+        DISPLAYHDR_OVERRIDE_OFF = -2147483648,
+        DISPLAYHDR_NONE = 0,
+        DISPLAYHDR_GENERIC = 1,
+        DISPLAYHDR_10_400 = 2,
+        DISPLAYHDR_10_600 = 4,
+        DISPLAYHDR_10_1000 = 8,
+        DISPLAYHDR_10_1400 = 16,
+        DISPLAYHDR_10_400_TRUEBLACK = 32,
+        DISPLAYHDR_10_500_TRUEBLACK = 64,
+        DISPLAYHDR_11_400 = 128,
+        DISPLAYHDR_11_500 = 256,
+        DISPLAYHDR_11_600 = 512,
+        DISPLAYHDR_11_1000 = 1024,
+        DISPLAYHDR_11_1400 = 2048,
+        DISPLAYHDR_11_2000 = 4096,
+        DISPLAYHDR_11_400_TRUEBLACK = 8192,
+        DISPLAYHDR_11_500_TRUEBLACK = 16384,
+        DISPLAYHDR_11_600_TRUEBLACK = 32768,
+        DISPLAYHDR_11_1000_TRUEBLACK = 65536,
+        DOLBYVISION_GENERIC = 131072,
+        DOLBYVISION_LOWLATENCY = 262144,
+        NVIDIA_HDR = 524288,
+        NVIDIA_GSYNC_ULTIMATE = 1048576,
+        AMD_FREESYNC_WITH_HDR = 2097152,
+        AMD_FREESYNC_PREMIUM_PRO = 4194304,
+        DISPLAYHDR_OEM_OVERRIDE_ON = 536870912,
+        DISPLAYHDR_OVERRIDE_ON = 1073741824
+    } _DISPLAYCONFIG_HDR_CERTIFICATIONS;
+
+
+    struct _DISPLAYCONFIG_GET_MONITOR_INTERNAL_INFO {
+        struct DISPLAYCONFIG_DEVICE_INFO_HEADER header;
+        wchar_t monitorUniqueName[260];
+        unsigned int RedPrimary[2];
+        unsigned int GreenPrimary[2];
+        unsigned int BluePrimary[2];
+        unsigned int WhitePoint[2];
+        unsigned long MinLuminance;
+        unsigned long MaxLuminance;
+        unsigned long MaxFullFrameLuminance;
+        std::int32_t ColorspaceSupport;//4 bytes
+        std::int32_t Flags;//4 bytes
+        /*
+        * FLAGS may internally have the following
+        * LuminanceValuesRaw
+        */
+        struct _DISPLAYCONFIG_BRIGHTNESS_CAPS BrightnessCaps;
+        unsigned int UsageSubClass;
+        unsigned int DisplayTech;
+        unsigned int NativeWidth;
+        unsigned int NativeHeight;
+        unsigned int PhysicalWidthInMm;
+        unsigned int PhysicalHeightInMm;
+        enum DISPLAYCONFIG_ROTATION DockedOrientation;
+        enum _DISPLAYCONFIG_HDR_CERTIFICATIONS DisplayHdrCertifications;
+    };
+
 };
 

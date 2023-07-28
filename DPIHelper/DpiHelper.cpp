@@ -154,3 +154,21 @@ bool DpiHelper::SetDPIScaling(LUID adapterID, UINT32 sourceID, UINT32 dpiPercent
     }
     return true;
 }
+
+
+std::wstring DpiHelper::GetDisplayUniqueName(LUID adapterID, UINT32 targetID)
+{
+    _DISPLAYCONFIG_GET_MONITOR_INTERNAL_INFO mi = {};
+    mi.header.adapterId = adapterID;
+    mi.header.id = targetID;
+    mi.header.size = sizeof(mi);
+    mi.header.type = (DISPLAYCONFIG_DEVICE_INFO_TYPE)DpiHelper::DISPLAYCONFIG_DEVICE_INFO_TYPE_CUSTOM::DISPLAYCONFIG_DEVICE_INFO_GET_MONITOR_UNIQUE_NAME;
+
+    LONG res = ::DisplayConfigGetDeviceInfo(&mi.header);
+    if (ERROR_SUCCESS == res)
+    {
+        return std::wstring(mi.monitorUniqueName);
+    }
+
+    return std::wstring();
+}
