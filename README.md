@@ -33,7 +33,7 @@ screen brightness.
 https://github.com/lihas/WindowsUndocumentedLib/tree/master
 One thing to note is that while DPI scaling is a property of source, the display unique ID is a target property, and
 therefore needs adapter ID, target ID pair instead of adaper ID, source ID pair.
-![DPI scaling MFC app monitorUniqueID](monitorUniqueID.png)
+![DPI scaling MFC app monitorUniqueID](monitorUniqueID_MFC.png)
 
 
 ## Update 2 : 28 Sep 2020
